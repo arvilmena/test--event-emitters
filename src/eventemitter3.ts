@@ -37,10 +37,28 @@ eventEmitter3.on("test2", async () => {
   return true;
 });
 
+eventEmitter3.on("number", async (number: number) => {
+  console.log(">> number listener started, pausing for 2 second");
+  await pause(2);
+  console.log(`>> number listener for ${number} finished`);
+  return true;
+});
+
 function emitTest() {
   console.log("> parent function invoked");
+
+  // create an array of numbers from 1 to 20
+  const numbers = Array.from(
+    new Set(Array.from({ length: 20 }, (_, i) => i + 1))
+  );
+  for (const number of numbers) {
+    console.log(`>> emitting number ${number}`);
+    eventEmitter3.emit("number", number);
+  }
+
   eventEmitter3.emit("test1");
   eventEmitter3.emit("test2");
+
   return ">parent function finished";
 }
 
